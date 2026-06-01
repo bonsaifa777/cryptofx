@@ -22,7 +22,7 @@ export const SocketProvider = ({ children }) => {
     if (socketRef.current?.connected) return;
 
     socketRef.current = io(SOCKET_URL, {
-      transports: ['polling', 'websocket'],
+      transports: ['polling'],
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
