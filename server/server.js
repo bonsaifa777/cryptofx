@@ -57,14 +57,18 @@ const portfolioRoutes = require('./routes/portfolio');
 const notificationRoutes = require('./routes/notifications');
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: [
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',').map(s => s.trim())
+  : [
       'http://localhost:5173',
       'http://localhost:5174',
       'http://localhost:3000',
       'https://cryptofxtrading.vercel.app'
-    ],
+    ];
+
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true
   }
@@ -78,12 +82,6 @@ app.set('trust proxy', 1);
 
 const corsOptions = {
   origin: function (origin, callback) {
-    const allowedOrigins = [
-      'http://localhost:5173',
-      'http://localhost:5174',
-      'http://localhost:3000',
-      'https://cryptofxtrading.vercel.app'
-    ];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -142,16 +140,12 @@ app.get('/api/health', (req, res) => {
 const PORT = process.env.PORT || 5001;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/cryptofx';
 
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
 mongoose.connect(MONGODB_URI)
-  .then(() => {
-    console.log('MongoDB connected');
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 module.exports = { app, io, emitAdminUpdate, invalidateCache, upload };
