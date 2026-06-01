@@ -1495,7 +1495,7 @@ const UsersTab = ({ users: initialUsers, showNotification }) => {
   const handleDelete = async () => {
     if (!deletingUser) return
     try {
-      const res = await fetch(`/api/superadmin/users/${deletingUser._id}`, {
+      const res = await fetch(`${API_URL}/superadmin/users/${deletingUser._id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${getSuperAdminToken()}` }
       })
@@ -1806,7 +1806,7 @@ const TransactionsTab = ({ transactions: initialTransactions, showNotification }
     }
     
     try {
-      const res = await fetch(`/api/superadmin/transactions/${tx._id}`, {
+      const res = await fetch(`${API_URL}/superadmin/transactions/${tx._id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -3146,8 +3146,8 @@ const PortfolioTab = ({ showNotification }) => {
       try {
         const token = getSuperAdminToken()
         const url = selectedUserId 
-          ? `/api/superadmin/portfolio-stats?userId=${selectedUserId}`
-          : '/api/superadmin/portfolio-stats'
+          ? `${API_URL}/superadmin/portfolio-stats?userId=${selectedUserId}`
+          : `${API_URL}/superadmin/portfolio-stats`
         const res = await fetch(url, {
           headers: { 'Authorization': `Bearer ${token}` }
         })
@@ -3528,8 +3528,8 @@ const WalletTab = ({ showNotification }) => {
     try {
       const token = getSuperAdminToken()
       const url = selectedUserId 
-        ? `/api/superadmin/wallet-stats?userId=${selectedUserId}`
-        : '/api/superadmin/wallet-stats'
+        ? `${API_URL}/superadmin/wallet-stats?userId=${selectedUserId}`
+        : `${API_URL}/superadmin/wallet-stats`
       
       const res = await fetch(url, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -3828,7 +3828,7 @@ const DepositTab = ({ showNotification }) => {
     
     try {
       const token = getSuperAdminToken()
-      const res = await fetch(`/api/superadmin/deposits/${deposit._id}/approve`, {
+      const res = await fetch(`${API_URL}/superadmin/deposits/${deposit._id}/approve`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -3858,7 +3858,7 @@ const DepositTab = ({ showNotification }) => {
     
     try {
       const token = getSuperAdminToken()
-      const res = await fetch(`/api/superadmin/deposits/${deposit._id}/reject`, {
+      const res = await fetch(`${API_URL}/superadmin/deposits/${deposit._id}/reject`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -3936,7 +3936,7 @@ const DepositTab = ({ showNotification }) => {
         memo: formData.name
       }
       console.log('Updating address:', selectedWallet.id, payload)
-      const res = await fetch(`/api/superadmin/deposit-addresses/${selectedWallet.id}`, {
+      const res = await fetch(`${API_URL}/superadmin/deposit-addresses/${selectedWallet.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -3968,7 +3968,7 @@ const DepositTab = ({ showNotification }) => {
     if (!selectedWallet) return
     try {
       const token = getSuperAdminToken()
-      const res = await fetch(`/api/superadmin/deposit-addresses/${selectedWallet.id}`, {
+      const res = await fetch(`${API_URL}/superadmin/deposit-addresses/${selectedWallet.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -4004,7 +4004,7 @@ const DepositTab = ({ showNotification }) => {
     setWallets(updated)
     try {
       const token = getSuperAdminToken()
-      await fetch(`/api/superadmin/deposit-addresses/${wallet.id}`, {
+      await fetch(`${API_URL}/superadmin/deposit-addresses/${wallet.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
